@@ -1,6 +1,9 @@
 package karazin.scala.users.group.week1.homework
 
 import scala.annotation.tailrec
+import scala.math.{BigInt, toDegrees}
+import java.math.BigInteger
+import scala.math
 /**
  * Preface
  * Implement all the things with ???.
@@ -40,27 +43,85 @@ object Homework :
 
   object `Boolean Operators` :
 
-    def not(b: Boolean): Boolean = ???
+    def not(b: Boolean): Boolean = {
+      if(b == true) false;
+      else
+        true;
+    }
 
-    def and(left: Boolean, right: Boolean): Boolean = ???
+    def and(left: Boolean, right: Boolean): Boolean = {
+      if (left == false) false;
+      else if (right == false) false;
+      else true;
+    }
 
-    def or(left: Boolean, right: Boolean): Boolean = ???
-
+    def or(left: Boolean, right: Boolean): Boolean = {
+      if(left == true) true;
+      else if(right == true) true;
+      else
+        false;
+    }
   end `Boolean Operators`
 
   object `Fermat Numbers` :
 
-    val multiplication: (BigInt, BigInt) => BigInt = ???
+    val multiplication: (BigInt, BigInt) => BigInt = (num1, num2) => {
+      def multiply(num1: BigInt, num2: BigInt, accumulator: BigInt) : BigInt = {
+        if (num1 == 0 || num2 == 0)
+          accumulator
+        else if (num2 < 0)
+          multiply(num1, num2 + 1, accumulator - num1)
+        else
+          multiply(num1, num2 - 1, accumulator + num1)
+      }
+      multiply(num1, num2, 0)
+    }
 
-    val power: (BigInt, BigInt) => BigInt = ???
+    val power: (BigInt, BigInt) => BigInt = (num1, num2) => {
+      def calculatePower(num1: BigInt, num2: BigInt, accumulator: BigInt) : BigInt = {
+        if (num2 > 0)
+          calculatePower(num1, num2 - 1, accumulator * num1)
+        else if (num2 < 0)
+          calculatePower(num1, -num2, 1 / accumulator)
+        else
+          accumulator
+      }
+      calculatePower(num1, num2, 1)
+    }
 
-    val fermatNumber: Int => BigInt = ???
+    val fermatNumber: (Int) => BigInt = (num: Int) => power(BigInt(2), power(BigInt(2), num))+BigInt(1);
 
   end `Fermat Numbers`
 
   object `Look-and-say Sequence` :
-    val lookAndSaySequenceElement: Int => BigInt = ???
+    val lookAndSaySequenceElement: Int => BigInt = (n: Int) =>{
+      if(n <= 0) BigInt(0);
+      var str = "1";
 
+      if (n > 1) str = "11";
+
+      var i = 3;
+      while (i <= n) {
+        str += '$';
+        val len = str.length;
+        var cnt = 1;
+        var tmp = "";
+        val arr = str.toCharArray;
+        for (j <- 1 until len) {
+          if (arr(j) != arr(j - 1)) {
+            tmp += cnt + 0;
+            tmp += arr(j - 1);
+            cnt = 1;
+          } else {
+            cnt += 1;
+          }
+        }
+        str = tmp;
+        i += 1;
+      }
+      BigInt(str);
+    }
+    
   end `Look-and-say Sequence`
 
 end Homework
