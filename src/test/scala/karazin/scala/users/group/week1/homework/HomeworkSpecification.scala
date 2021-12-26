@@ -9,7 +9,7 @@ object HomeworkSpecification extends Properties("Homework"):
 
   include(BooleanOperatorsSpecification)
   include(FermatNumbersSpecification)
-  include(LookAndAaSequenceSpecification)
+  include(LookAndSaySequenceSpecification)
 
 end HomeworkSpecification
 
@@ -47,17 +47,22 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   }
 
   property("fermatNumber") = forAll { (n: Int) =>
-    fermatNumber(n) == Math.pow(2, Math.pow(2, 2)) + 1
+    var res = (Math.pow(2, Math.pow(2, n)) + 1).toInt;
+
+    fermatNumber(n) == BigInt(res);
   }  
 
 end FermatNumbersSpecification
 
-object LookAndAaSequenceSpecification extends Properties("Look-and-say Sequence"):
+object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence"):
   import `Look-and-say Sequence`._
   import arbitraries.given Arbitrary[Int]
 
-  property("fermatNumber") = forAll { (n: Int) =>
-    lookAndSaySequenceElement(n) == 42
-  }  
+  var results = Array(1, 11, 21, 1211, 111221, 312211, 13112221);
+  val smallInteger = for(randomInt <- Gen.choose[Int](min = 1, max = 7))yield randomInt
 
-end LookAndAaSequenceSpecification
+  property("Look-and-say Sequence") = forAll(smallInteger){(randomInt: Int) =>
+    lookAndSaySequenceElement(randomInt) == results(randomInt-1);
+  }
+
+end LookAndSaySequenceSpecification

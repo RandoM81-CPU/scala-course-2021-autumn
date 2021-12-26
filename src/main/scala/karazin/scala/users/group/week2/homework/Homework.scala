@@ -23,30 +23,36 @@ object Homework:
 
     @targetName("less or equal")
     infix def <=(that: Rational): Boolean =
-      this < that || this == that
+      this.numer * that.denom <= that.numer * this.denom
 
     @targetName("greater than")
     infix def >(that: Rational): Boolean =
-      !(this <= that)
+      this.numer * that.denom > that.numer * this.denom
 
     @targetName("greater or equal")
     infix def >=(that: Rational): Boolean =
-      !(this < that)
+      this.numer * that.denom >= that.numer * this.denom
 
     @targetName("addition")
-    infix def +(that: Rational): Rational = ???
+    infix def +(that: Rational): Rational =
+      Rational(this.numer * that.denom + this.denom * that.numer, this.denom * that.denom)
+
+    def neg = Rational(-1 * this.numer, this.denom)
 
     @targetName("negation")
-    infix def unary_- : Rational = ???
+    infix def unary_- : Rational = neg
 
     @targetName("substraction")
-    infix def -(that: Rational): Rational = ???
+    infix def -(that: Rational): Rational =
+      Rational(this.numer * that.denom - this.denom * that.numer, this.denom * that.denom)
 
     @targetName("multiplication")
-    infix def *(that: Rational): Rational = ???
+    infix def *(that: Rational): Rational =
+      Rational(this.numer * that.numer, this.denom * that.denom)
 
-    @targetName("devision")
-    infix def /(that: Rational): Rational = ???
+    @targetName("division")
+    infix def /(that: Rational): Rational =
+      Rational(numer * that.denom, denom * that.numer)
 
     override def toString: String = s"${this.numer}/${this.denom}"
 
@@ -55,7 +61,12 @@ object Homework:
 
     private lazy val g = gcd(abs(x), y)
 
-    override def equals(other: Any): Boolean = ???
+    override def equals(other: Any): Boolean =
+      other match {
+        case r: Rational =>
+          r.isInstanceOf[Rational] && (r.numer * this.denom == r.denom * this.numer)
+        case _ => false
+      }
 
   end Rational
 
